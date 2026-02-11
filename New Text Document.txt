@@ -1,2 +1,0 @@
-"dev": "node --watch --env-file=.env --experimental-strip-types --experimental-sqlite ./src/server.js",
-ssdfsdf
