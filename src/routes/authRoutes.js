@@ -61,7 +61,7 @@ router.post("/login", (req, res) => {
       expiresIn: "24h",
     });
 
-    res.json(token);
+    res.json({ token });
   } catch (err) {
     console.log(err.message);
     res.sendStatus(503);

@@ -42,9 +42,9 @@ h1 {
     width: fit-content;
 }
 
-.tab-container {
+/* .tab-container {
     overflow-x: auto;
-}
+} */
 
 .tab-button {
     border: none;
