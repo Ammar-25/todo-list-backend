@@ -25,8 +25,29 @@ router.post("/", (req, res) => {
   }
 });
 
-router.put("/:id", (req, res) => {});
+router.put("/:id", (req, res) => {
+  const todo = req.body;
+  const sql = db.prepare(
+    `UPDATE todos SET task = ?, completed = ? WHERE id = ?`,
+  );
+  try {
+    sql.run(todo.task, todo.completed, req.params.id);
+    return res.status(200).json({ message: "Todo updated" });
+  } catch (error) {
+    console.log(error.message);
+    return res.sendStatus(503);
+  }
+});
 
-router.delete("/:id", (req, res) => {});
+router.delete("/:id", async (req, res) => {
+  const deleteTodo = db.prepare(`DELETE FROM todos WHERE id = ?`);
+  try {
+    await deleteTodo.run(req.params.id);
+    return res.sendStatus(200);
+  } catch (error) {
+    console.log(error.message);
+    return res.sendStatus(500);
+  }
+});
 
 export default router;

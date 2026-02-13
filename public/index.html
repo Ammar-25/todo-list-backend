@@ -14,6 +14,11 @@
 </head>
 
 <body>
+    <!---
+    1- TODO: add logout btn and logic
+    
+    2- TODO: make the todos view in another file and route
+    --->
     <section id="auth">
         <div>
             <h2 className="sign-up-text">Login</h2>
@@ -274,8 +279,9 @@
                 'Content-Type': 'application/json',
                 'Authorization': token
             },
-            body: JSON.stringify({ task: todos.find(val => val.id === index).task, completed: 1 })
+            body: JSON.stringify({ id: index, task: todos.find(val => val.id === index).task, completed: 1 })
         })
+        // TODO: confirm update & if not message appears
         fetchTodos()
     }
 
