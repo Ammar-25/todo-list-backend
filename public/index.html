@@ -11,6 +11,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
         integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        .logout-btn{
+            border: 1.5px solid #ff5959;
+            box-shadow: 2px 2px 0 0 #ff5959;
+        }
+    </style>
 </head>
 
 <body>
@@ -39,6 +46,7 @@
     </section>
     <header style="display: none;">
         <h1 class="text-gradient">You have 0 open tasks.</h1>
+        <button class="logout-btn" onclick="logout()">Logout</button>
     </header>
     <nav style="display: none;" class="tab-container">
         <button onclick="changeTab('All')" class="tab-button  selected-tab">
@@ -83,14 +91,34 @@
     // const deleteBtn = document.getElementById('')
     // const updateBtn = 
 
+
+    function sortTodos() {
+        todos.sort((a, b) => {
+            if (a.completed !== b.completed) {
+                return Number(a.completed) - Number(b.completed);
+            }
+            return b.id - a.id;
+        });
+    }
+
     // PAGE RENDERING LOGIC
     async function showDashboard() {
         nav.style.display = 'block'
-        header.style.display = 'flex'
+        header.style = 'display: flex; justify-content: space-between;'
         main.style.display = 'flex'
         authContent.style.display = 'none'
 
         await fetchTodos()
+    }
+
+    function showAuth() {
+        nav.style.display = 'none'
+        header.style.display = 'none'
+        main.style.display = 'none'
+        authContent.style.display = 'flex'
+        textError.style.display = 'none'
+        email.value = ''
+        password.value = ''
     }
 
     function updateHeaderText() {
@@ -137,6 +165,7 @@
 
         updateNavCount()
         updateHeaderText()
+        sortTodos()
 
         let todoList = ``
         todos.filter(val => {
@@ -145,11 +174,13 @@
             const taskIndex = todo.id
             todoList += `
             <div class="card todo-item">
-                <p>${todo.task}</p>
+                <p ${todo.completed ? "class = 'finished'" : ""}>${todo.task}</p>
                 <div class="todo-buttons">
-                    <button onclick="updateTodo(${taskIndex})" ${todo.completed ? 'disabled' : ''}>
+                    ${todo.completed ? `` : `
+                    <button onclick="updateTodo(${taskIndex})">
                         <h6>Done</h6>
-                    </button>
+                    </button>`
+                }
                     <button onclick="deleteTodo(${taskIndex})">
                         <h6>Delete</h6>
                     </button>
@@ -255,7 +286,9 @@
     }
 
     function logout() {
-        // wipe states and clear cached token
+        localStorage.removeItem('token')
+        token = null
+        showAuth()
     }
 
     // CRUD LOGIC

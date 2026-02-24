@@ -176,3 +176,7 @@ hr {
         gap: 1rem;
     }
 }
+.finished{
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: line-through;
+}
